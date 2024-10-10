@@ -136,8 +136,9 @@ fn main() -> Result<()> {
                 assert_eq!(ca.version, 1);
 
                 // Construct elliptic curve and public key point.
-                let (curve, public_key) = EllipticCurvePoint::from_pubkey(&capk.public_key)?;
-                let public_key = curve.pt_from_monty(public_key)?;
+                let (curve, document_public_key) =
+                    EllipticCurvePoint::from_pubkey(&capk.public_key)?;
+                let document_public_key = curve.pt_from_monty(public_key)?;
                 println!("   - Field: {:x}", curve.base_field().modulus());
                 println!("   - Generator: {:x}", curve.generator());
                 println!("   - Card Public Key: {:x}", public_key);
@@ -150,7 +151,7 @@ fn main() -> Result<()> {
                 println!("   - Public key: {:x}", public_key);
 
                 // Compute shared secret
-                let (shared_point, shared_secret) = ecka(private_key, public_key)?;
+                let (shared_point, shared_secret) = ecka(private_key, document_public_key)?;
                 println!("   - Secret point: {:x}", shared_point);
                 println!("   - Shared secret: {}", hex::encode(&shared_secret));
 
